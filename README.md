@@ -4,7 +4,7 @@ Minimizing Carbon Emission during EV Charging
 ## Files
 ### Dataset (CAISO Emission data)
 - Emission Data: http://www.caiso.com/todaysoutlook/pages/emissions.html
-- > Zip File
+> Zip File in this Repo: [CAISO_CO2_per_resource_2021.zip](./CAISO_CO2_per_resource_2021.zip)
 - Supply Data: https://www.caiso.com/todaysoutlook/Pages/supply.html
 
 ### Consolidate python script

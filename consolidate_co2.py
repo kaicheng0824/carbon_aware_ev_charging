@@ -3,6 +3,8 @@ import numpy as np
 import calculation
 import csv_handler
 
+# Parse through all CO2 data in 2021 and sum them up
+
 row_count = 7
 data_points = 24*12
 natural_gas_sum = np.array(data_points)

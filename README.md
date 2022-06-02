@@ -4,9 +4,9 @@ Downloading 2021 data from CAISO regarding carbon emission and power supply data
 ## Files
 ### Dataset (CAISO Emission data)
 - Emission Data: http://www.caiso.com/todaysoutlook/pages/emissions.html
-    - Zip File in this Repo: [CAISO_CO2_per_resource_2021.zip](./CAISO_CO2_per_resource_2021.zip)
+    - Zip File in this Repo: [CAISO_CO2_per_resource_2021.zip](data/CO2/CAISO_CO2_per_resource_2021.zip)
 - Supply Data: https://www.caiso.com/todaysoutlook/Pages/supply.html
-    - Zip File in this Repo: [CAISO_supply_2021.zip](./CAISO_supply_2021.zip)
+    - Zip File in this Repo: [CAISO_supply_2021.zip](data/Supply/CAISO_supply_2021.zip)
 
 ### Consolidate python script
 These 2 scripts uses the csv library to iterate through all dates to summarize the year round data in terms of average carbon intensity.

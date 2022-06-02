@@ -27,14 +27,11 @@ required_energy = data_handler.getBerkleyData(arrival_time,departure_time, requi
 final_energy = initial_state + required_energy
 
 #print(arrival_time)
-<<<<<<< HEAD
+
 arrival_time = np.array([int(i*12) for i in arrival_time])
 departure_time = np.array([int(i*12) for i in departure_time])
 print(arrival_time)
-=======
-arrival_time = [int(i*12) for i in arrival_time]
-#print(arrival_time)
->>>>>>> d56bd263c29894f0fb3a3856dcf281254fa38c63
+
 
 # Get Carbon Intensity Data
 carbon_intensity = np.array(data_handler.getCarbonIntensityData(carbon_intensity),dtype=float)

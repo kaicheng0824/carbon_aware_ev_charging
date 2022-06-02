@@ -1,5 +1,7 @@
 import csv
 import numpy as np
+import calculation
+import csv_handler
 
 row_count = 9
 data_points = 24*12
@@ -14,8 +16,7 @@ smallsmall = 3
 months = [big,smallsmall,big,small,big,small,big,big,small,big,small,big]
 month = np.array(months)
 
-path = np.zeros((1,366),dtype='|S40')
-print(path.shape)
+path = np.zeros((1,366),dtype='|S100')
 
 theMonth = 1
 dayCount = 0
@@ -42,59 +43,40 @@ for month in months:
         else:
             theDay_str = str(day)
         
-        path[0,dayCount] = 'CAISO-supply-2021{}.csv'.format(theMonth_str + theDay_str)
+        path[0,dayCount] = 'data/Supply/CAISO_supply_2021/CAISO-supply-2021{}.csv'.format(theMonth_str + theDay_str)
         
         dayCount = dayCount+1
     
     theMonth = theMonth+1
 
-#print(path)
+# Daylight saving started on March 14th (73nd day) to November 7th (311th day)
+path_daylight_saving = path[0,72:311]
+path_non_daylight = np.concatenate((path[0,311:-1],path[0,0:72]), axis=None)
+all_sum_daylight = np.zeros((row_count,data_points), dtype=int)
+all_sum_non_daylight = np.zeros((row_count,data_points), dtype=int)
+tot_sum_daylight = np.zeros((row_count,data_points), dtype=object)
+tot_sum_non_daylight = np.zeros((row_count,data_points), dtype=object)
+
 tot_sum = np.zeros((row_count,data_points), dtype=object)
-#print(tot_sum)
 
-for a in range(366):
-    if(path[0,a]==b''):
-        continue
+# Sum up all
+tot_sum = calculation.sum(365,path[0,:],data_points,all_sum,tot_sum,row_count)
+tot_sum_non_daylight = calculation.sum(365-239,path_non_daylight
+                        ,data_points
+                        ,all_sum_non_daylight
+                        ,tot_sum_non_daylight
+                        ,row_count)
 
-    with open(path[0,a], 'r') as file:
-        reader = csv.reader(file)
-        next(reader)
+tot_sum_daylight = calculation.sum(238,path_daylight_saving
+                        ,data_points
+                        ,all_sum_daylight
+                        ,tot_sum_daylight
+                        ,row_count)
 
-        i = 0
-        for row in reader:
-            theList = list(row)
-            #theList = theList[1:]
-            #print(theList)
+# Adding Field Title
 
-            for j in range(data_points):
-                # print(i)
-                # print('-----')
-                # print(j)
-                if(theList[j+1]==''):
-                    continue
-
-                all_sum[i,j] = theList[j+1]
-
-            i = i + 1
-
-            if(i < row_count):
-                continue
-            else:
-                break
-
-    for k in range(row_count):
-        tot_sum[k,1:] = tot_sum[k,1:] + all_sum[k,1:]
-        
-with open(path[0,0], 'r') as file:
-        reader = csv.reader(file)
-        next(reader)
-        
-        k = 0
-        for row in reader:
-            tot_sum[k,0] = list(row)[0]
-            k = k + 1
-
-with open(path[0,0], 'r') as file:
+def getFields(fields):
+    with open(path[0,0], 'r') as file:
         reader = csv.reader(file)
         
         k = 0
@@ -103,24 +85,44 @@ with open(path[0,0], 'r') as file:
             k = k+1
             if(k>=1):
                 break
+    
+    return fields
+
+fields = getFields(fields)
+
+with open(path[0,0], 'r') as file:
+        reader = csv.reader(file)
+        next(reader)
+        
+        k = 0
+        for row in reader:
+            tot_sum[k,0] = list(row)[0]
+            tot_sum_daylight[k,0] = list(row)[0]
+            tot_sum_non_daylight[k,0] = list(row)[0]
+            k = k + 1
+
+
 
 # Summing all different sources
 for i in range(data_points-1):
     for j in range(row_count-1):
         tot_sum[8,i+1] = tot_sum[8,i+1] + tot_sum[j,i+1]
+        tot_sum_daylight[8,i+1] = tot_sum_daylight[8,i+1] + tot_sum_daylight[j,i+1]
+        tot_sum_non_daylight[8,i+1] = tot_sum_non_daylight[8,i+1] + tot_sum_non_daylight[j,i+1]
 
 tot_sum[8,0] = 'Sum'
+tot_sum_daylight[8,0] = 'Sum'
+tot_sum_non_daylight[8,0] = 'Sum'
 
-with open('CAISO_2021_supply.csv', 'w', newline='') as file:
-    writer = csv.writer(file)
+# Normalize to 365 days and twelve 5 minute session
+for i in range(row_count):
+    tot_sum[i,1:] = tot_sum[i,1:]/365/12
+    tot_sum_daylight[i,1:] = tot_sum_daylight[i,1:]/238/12
+    tot_sum_non_daylight[i,1:] = tot_sum_non_daylight[i,1:]/(365-238)/12
 
-    writer.writerow(fields)
-
-    for i in range(row_count):
-        writer.writerow(tot_sum[i].tolist())
-
-
-
+csv_handler.write_csv('CAISO_2021_supply_daylight.csv', tot_sum_daylight,fields,row_count)
+csv_handler.write_csv('CAISO_2021_supply.csv', tot_sum,fields,row_count)
+csv_handler.write_csv('CAISO_2021_supply_non_daylight.csv', tot_sum_non_daylight,fields,row_count)
 
 
 

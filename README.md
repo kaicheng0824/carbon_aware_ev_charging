@@ -14,4 +14,5 @@ These 2 scripts uses the csv library to iterate through all dates to summarize t
 - [consolidate_supply.py](./consolidate_supply.py): Consolidate energy supply data throughout the year of 2021
 
 ### Visualization
+Carbon Intensity Visualization
 - https://docs.google.com/spreadsheets/d/1brIf13YIAzqOG9SNOqqScco_z9aQ8DBt6TafIYevyAI/edit?usp=sharing

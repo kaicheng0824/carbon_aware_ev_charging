@@ -26,12 +26,13 @@ departure_time,
 required_energy = data_handler.getBerkleyData(arrival_time,departure_time, required_energy)
 final_energy = initial_state + required_energy
 
-print(arrival_time)
-arrival_time = [int(i*12) for i in arrival_time]
+#print(arrival_time)
+arrival_time = np.array([int(i*12) for i in arrival_time])
+departure_time = np.array([int(i*12) for i in departure_time])
 print(arrival_time)
 
 # Get Carbon Intensity Data
-carbon_intensity = data_handler.getCarbonIntensityData(carbon_intensity)
+carbon_intensity = np.array(data_handler.getCarbonIntensityData(carbon_intensity),dtype=float)
 
 def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_states, max_power, terminal_states, arrival_time, dept_time, power_capacity, B, factor = 1):
     x_terminal=cp.Parameter(num_of_vehicles, name='x_terminal') # Requested end SoC for all vehicles

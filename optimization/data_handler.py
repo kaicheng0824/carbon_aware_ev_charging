@@ -1,7 +1,7 @@
 import csv
 
 def getBerkleyData(arrival_time,departure_time,required_energy):
-    with open('data/Berkley EV Charging/LBNL_Data.csv', newline='') as file:
+    with open('data/Berkley_EV_Charging/LBNL_Data.csv', newline='') as file:
         reader = csv.reader(file)
         next(reader)
 

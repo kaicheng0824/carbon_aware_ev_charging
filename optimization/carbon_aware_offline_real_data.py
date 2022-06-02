@@ -27,9 +27,14 @@ required_energy = data_handler.getBerkleyData(arrival_time,departure_time, requi
 final_energy = initial_state + required_energy
 
 #print(arrival_time)
+<<<<<<< HEAD
 arrival_time = np.array([int(i*12) for i in arrival_time])
 departure_time = np.array([int(i*12) for i in departure_time])
 print(arrival_time)
+=======
+arrival_time = [int(i*12) for i in arrival_time]
+#print(arrival_time)
+>>>>>>> d56bd263c29894f0fb3a3856dcf281254fa38c63
 
 # Get Carbon Intensity Data
 carbon_intensity = np.array(data_handler.getCarbonIntensityData(carbon_intensity),dtype=float)
@@ -56,6 +61,7 @@ def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_state
         for t in range(timesteps):
             constr += [u[i, t] <= u_max*(t>=arrival_time[i]),
                        u[i, t] <= u_max*(t<dept_time[i])]
+    
     obj = 0.
     for t in range (timesteps):
         constr += [cp.sum(u[0:num_of_vehicles,t]) <= power_capacity]
@@ -77,6 +83,7 @@ def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_state
 
     return x.value/B, u.value
 
+print(required_energy)
 x, u = carbon_aware_MPC(carbon_intensity, total_vehicles, num_steps, initial_state, max_power_u, final_energy, arrival_time,  departure_time, power_capacity, battery_capacity, factor=60)
 print(f'the energy delivery: {round(np.sum(u),2)}, the required energy: {round(np.sum(required_energy),2)}')
 carbon_emission = np.sum(np.array([u[:,t]*carbon_intensity[t] for t in range(num_steps)]))

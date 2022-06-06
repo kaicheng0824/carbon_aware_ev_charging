@@ -19,8 +19,8 @@ with open('data/Berkley_EV_Charging/LBNL_Data.csv', newline='') as file:
         if(theRow[2][0:4]!=str(2021)):
             continue
         else:  
-            arrival_time[line_count] = theRow[2][11:13]+':'+theRow[2][14:16]
-            departure_time[line_count] = theRow[3][11:13]+':'+theRow[3][14:16]
+            arrival_time[line_count] = int(((float(theRow[2][11:13])*60)+float(theRow[2][14:16]))/5)
+            departure_time[line_count] = int(((float(theRow[3][11:13])*60)+float(theRow[3][14:16]))/5)
             required_energy[line_count] = (float(theRow[6]))
             hashcode[line_count] = theRow[0]
             date[line_count] = theRow[2][0:4] + theRow[2][5:7] + theRow[2][8:10]
@@ -42,4 +42,4 @@ date = date[0:line_count]
 summary = np.vstack((date,hashcode,arrival_time,departure_time,required_energy)).T
 
 fields = np.array((['date','hashcode','arrival time', 'departure time', 'required energy']))
-csv_handler.write_csv('BerkeleyDataCleaned.csv',summary,fields,len(date)-1)
+csv_handler.write_csv('BerkeleyDataCleaned_timestep_adjusted.csv',summary,fields,len(date)-1)

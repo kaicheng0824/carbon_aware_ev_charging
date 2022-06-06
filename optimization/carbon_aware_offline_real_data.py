@@ -26,14 +26,16 @@ departure_time,
 required_energy = data_handler.getBerkleyData(arrival_time,departure_time, required_energy)
 final_energy = initial_state + required_energy
 
-#print(arrival_time)
+
 arrival_time = [int(i*12) for i in arrival_time]
-#print(arrival_time)
+departure_time = [int(i*12) for i in departure_time]
+print(arrival_time)
+print(departure_time)
 
 # Get Carbon Intensity Data
-carbon_intensity = data_handler.getCarbonIntensityData(carbon_intensity)
+carbon_intensity = np.array(data_handler.getCarbonIntensityData(carbon_intensity),dtype=float)
 
-def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_states, max_power, terminal_states, arrival_time, dept_time, power_capacity, B, factor = 1):
+def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_states, max_power, terminal_states, arrival_time, dept_time, power_capacity, B, factor):
     x_terminal=cp.Parameter(num_of_vehicles, name='x_terminal') # Requested end SoC for all vehicles
     x0 = cp.Parameter(num_of_vehicles, name='x0') # Initial SoC for all vehicles
     max_sum_u = cp.Parameter(name='max_sum_u') # Peak charging power for the infrastructure
@@ -68,18 +70,16 @@ def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_state
     prob.solve()
 
     # Plotting the 10th Car
-    plt.plot(x.value[5]/B,'r',label='SoC')
-    plt.plot(u.value[5],'b',label='charging_power')
-    #print(np.array(carbon_intensity,dtype=float))
+    print(x.value[1])
+    plt.plot(x.value[1]/B,'r',label='SoC')
+    plt.plot(u.value[1],'b',label='charging_power')
     plt.plot(np.array(carbon_intensity,dtype=float),'g',label='carbon_intensity')
-    print(f'arrival time:{arrival_time[5]}')
+    print(f'arrival time:{arrival_time[1]}')
     plt.show()
 
     return x.value/B, u.value
 
-print(required_energy)
-x, u = carbon_aware_MPC(carbon_intensity, total_vehicles, num_steps, initial_state, max_power_u, final_energy, arrival_time,  departure_time, power_capacity, battery_capacity, factor=60)
-print(f'the energy delivery: {round(np.sum(u),2)}, the required energy: {round(np.sum(required_energy),2)}')
+x, u = carbon_aware_MPC(carbon_intensity, total_vehicles, num_steps, initial_state, max_power_u, final_energy, arrival_time,  departure_time, power_capacity, battery_capacity, factor=1000000)
 carbon_emission = np.sum(np.array([u[:,t]*carbon_intensity[t] for t in range(num_steps)]))
 print(f'the energy delivery: {round(np.sum(u),2)}, the required energy: {round(np.sum(required_energy),2)}, the carbon emission term: {round(carbon_emission,2)}')
 

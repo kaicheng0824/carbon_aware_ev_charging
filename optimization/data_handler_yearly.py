@@ -1,14 +1,17 @@
 import csv
 import numpy as np
 
-def getBerkleyData(arrival_time,departure_time,required_energy):
+def getBerkleyData(total_vehicles=10):
+    arrival_time = np.zeros(total_vehicles,)
+    departure_time = np.zeros(total_vehicles,)
+    required_energy = np.zeros(total_vehicles,)
     with open('../data/Berkley_EV_Charging/LBNL_Data.csv', newline='') as file:
         reader = csv.reader(file)
         next(reader)
 
         line_count = 0
         for row in reader:
-            if(line_count == 10):
+            if(line_count == total_vehicles):
                 break
             else:
                 theRow = list(row)
@@ -37,7 +40,7 @@ def getCleanedBerkleyData(arrival_time,departure_time,required_energy):
     return arrival_time, departure_time, required_energy, date
 
 def getCarbonIntensityData(carbon_intensity):
-    with open('CAISO_2021_CarbonIntensity.csv', newline='') as file:
+    with open('../data/Processed Data/CAISO_2021_CarbonIntensity.csv', newline='') as file:
         reader = csv.reader(file)
         next(reader)
 

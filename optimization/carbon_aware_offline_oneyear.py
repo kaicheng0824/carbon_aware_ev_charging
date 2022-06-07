@@ -13,17 +13,12 @@ battery_capacity = 50  # kwh
 power_capacity = 120  # kw, max power delivery
 max_power_u = 3  # max power intake for cars
 
-arrival_time = np.zeros(total_vehicles)
-departure_time = np.zeros(total_vehicles)
-required_energy = np.zeros(total_vehicles)
+
 initial_state = np.random.uniform(0.8, 4.0, size=(total_vehicles,))
-final_energy = np.zeros(total_vehicles)
 carbon_intensity_one_day = np.zeros(num_steps)
 
 # Get Berkley Data
-arrival_time,
-departure_time,
-required_energy = data_handler.getBerkleyData(arrival_time, departure_time, required_energy)
+arrival_time, departure_time, required_energy = data_handler_yearly.getBerkleyData(total_vehicles)
 final_energy = initial_state + required_energy
 
 
@@ -32,9 +27,9 @@ departure_time = [int(i * 12) for i in departure_time]
 
 print(np.shape(initial_state))
 # Get Carbon Intensity Data
-carbon_intensity = np.array(data_handler.getCarbonIntensityData(carbon_intensity_one_day), dtype=float)
+carbon_intensity = np.array(data_handler_yearly.getCarbonIntensityData(carbon_intensity_one_day), dtype=float)
 print(np.shape(carbon_intensity))
-
+print('arriva', arrival_time, 'dept', departure_time, 'initial', initial_state, 'required',required_energy, 'final',final_energy)
 
 def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_states, max_power, terminal_states,
                      arrival_time, dept_time, power_capacity, B, factor):
@@ -47,7 +42,7 @@ def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_state
     u = cp.Variable((num_of_vehicles, timesteps), name='u')  # charging power at each time step for each vehicle
 
     # print(terminal_states)
-    x_terminal.value = terminal_states[0][:]
+    x_terminal.value = terminal_states
     x0.value = initial_states
     max_sum_u.value = power_capacity
     u_max.value = max_power

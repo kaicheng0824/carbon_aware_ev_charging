@@ -12,44 +12,48 @@ import_gas_sum = np.array(data_points)
 all_sum = np.zeros((row_count,data_points), dtype=int)
 fields = np.zeros(data_points, dtype=object)
 
-big = 1
-small = 2
-smallsmall = 3
-months = [big,smallsmall,big,small,big,small,big,big,small,big,small,big]
-month = np.array(months)
+def createPath():
+    big = 1
+    small = 2
+    smallsmall = 3
+    months = [big,smallsmall,big,small,big,small,big,big,small,big,small,big]
+    month = np.array(months)
 
-path = np.zeros((1,366),dtype='|S100')
+    path = np.zeros((1,366),dtype='|S100')
 
-theMonth = 1
-dayCount = 0
-for month in months:
-    if(month==big):
-        maxDay = 31
-    elif(month==small):
-        maxDay = 30
-    else:
-        maxDay = 28
+    theMonth = 1
+    dayCount = 0
+    for month in months:
+        if(month==big):
+            maxDay = 31
+        elif(month==small):
+            maxDay = 30
+        else:
+            maxDay = 28
     
-    for day in range(maxDay):
+        for day in range(maxDay):
         # Adjust day to normal 1 to 30
-        day = day + 1
+            day = day + 1
         #print(day)
         
-        if(theMonth < 10):
-            theMonth_str = str(theMonth).zfill(2)
-        else:
-            theMonth_str = str(theMonth)
+            if(theMonth < 10):
+                theMonth_str = str(theMonth).zfill(2)
+            else:
+                theMonth_str = str(theMonth)
 
-        if(day < 10):
-            theDay_str = str(day).zfill(2)
-        else:
-            theDay_str = str(day)
+            if(day < 10):
+                theDay_str = str(day).zfill(2)
+            else:
+                theDay_str = str(day)
         
-        path[0,dayCount] = 'data/CO2/CAISO_CO2_per_resource_2021/CAISO-co2-per-resource-2021{}.csv'.format(theMonth_str + theDay_str)
+            path[0,dayCount] = 'data/CO2/CAISO_CO2_per_resource_2021/CAISO-co2-per-resource-2021{}.csv'.format(theMonth_str + theDay_str)
         
-        dayCount = dayCount+1
+            dayCount = dayCount+1
     
-    theMonth = theMonth+1
+        theMonth = theMonth+1
+    return path
+
+path = createPath()
 
 # Daylight saving started on March 14th (73nd day) to November 7th (311th day)
 path_daylight_saving = path[0,72:311]

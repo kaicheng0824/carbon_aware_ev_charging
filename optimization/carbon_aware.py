@@ -9,6 +9,8 @@ from carbon_forecasts import carbon_intensity_forecast
 import gurobipy
 from gurobipy import quicksum
 import time 
+import os 
+import pandas as pd
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--factor", type=float, default=0.4, help="the balanced factor")
@@ -267,6 +269,12 @@ feature_mat, carbon_model = carbon_intensity_forecast()
 balancing_fac = opts.factor
 path1 = '../result/gurobisolver/offline_P120.csv'
 path2 = '../result/gurobisolver/onlineall_P120.csv'
+if not os.path.exists(path1):
+    df = pd.DataFrame(columns=['day','factor','required','delivery','percents','num_vehicle','carbon_emission(kg)'])
+    df.to_csv(path1)
+if not os.path.exists(path2):
+    df = pd.DataFrame(columns=['day','factor','required','delivery','percents','num_vehicle','carbon_emission(kg)'])
+    df.to_csv(path2)
 #path1 = '../result/gurobisolver/different_factor.csv'
 
 for current_date in range(1,5): #Need to construct initial forecasting data (1 day) for carbon_forecasts, so start optimization from day2

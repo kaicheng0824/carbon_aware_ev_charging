@@ -7,6 +7,8 @@ import time
 import data_handler_yearly
 import gurobipy
 from gurobipy import quicksum
+import os 
+import pandas as pd
 
 
 parser = argparse.ArgumentParser()
@@ -150,6 +152,9 @@ starting_index = 0
 end_index = 0
 
 path = '../result/gurobisolver/TOU_P120.csv'
+if not os.path.exists(path):
+    df = pd.DataFrame(columns=['day','factor','required','delivery','percents','num_vehicle','carbon_emission(kg)'])
+    df.to_csv(path)
 error = []
 for current_date in range(1,5):
     starting_index = np.copy(end_index)

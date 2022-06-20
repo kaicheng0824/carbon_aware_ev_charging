@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import argparse
 import time
 import data_handler_yearly
+import os 
+import pandas as pd
 from carbon_forecasts import carbon_intensity_forecast
 
 parser = argparse.ArgumentParser()
@@ -115,6 +117,9 @@ def Equal_sharing(num_of_vehicles, timesteps,
 starting_index = 0
 end_index = 0
 path = f'../result/ES_P{int(opts.P)}.csv'
+if not os.path.exists(path):
+    df = pd.DataFrame(columns=['day','factor','required','delivery','percents','num_vehicle','carbon_emission(kg)'])
+    df.to_csv(path)
 feature_mat, carbon_model = carbon_intensity_forecast()
 
 for current_date in range(1, 365):

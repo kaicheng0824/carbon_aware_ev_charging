@@ -267,8 +267,8 @@ end_index = 0
 
 feature_mat, carbon_model = carbon_intensity_forecast()
 balancing_fac = opts.factor
-path1 = '../result/gurobisolver/offline_P120.csv'
-path2 = '../result/gurobisolver/onlineall_P120.csv'
+path1 = f'../result/gurobisolver/offline_P{int(opts.P)}.csv'
+path2 = f'../result/gurobisolver/onlineall_P{int(opts.P)}.csv'
 if not os.path.exists(path1):
     df = pd.DataFrame(columns=['day','factor','required','delivery','percents','num_vehicle','carbon_emission(kg)'])
     df.to_csv(path1)
@@ -277,7 +277,7 @@ if not os.path.exists(path2):
     df.to_csv(path2)
 #path1 = '../result/gurobisolver/different_factor.csv'
 
-for current_date in range(1,5): #Need to construct initial forecasting data (1 day) for carbon_forecasts, so start optimization from day2
+for current_date in range(1,365): #Need to construct initial forecasting data (1 day) for carbon_forecasts, so start optimization from day2
 
     starting_index = np.copy(end_index)
     num_of_vehicles = 0

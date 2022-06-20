@@ -16,3 +16,20 @@ These 2 scripts uses the csv library to iterate through all dates to summarize t
 ### Visualization
 Carbon Intensity Visualization
 - https://docs.google.com/spreadsheets/d/1brIf13YIAzqOG9SNOqqScco_z9aQ8DBt6TafIYevyAI/edit?usp=sharing
+
+
+# Use
+Install packages
+```python
+pip install requirements.txt
+```
+Generating results
+```python
+cd optimization
+python TOU_2021.py --P 120
+python EDF_2021.py --P 120
+python ES_2021.py --P 120
+python carbon_aware.py --P 120 --factor 0.35
+```
+
+Go to ```result/result_analysis.ipynb``` to analysis the results.

@@ -29,7 +29,7 @@ print(np.shape(initial_state))
 # Get Carbon Intensity Data
 carbon_intensity = np.array(data_handler_yearly.getCarbonIntensityData(carbon_intensity_one_day), dtype=float)
 print(np.shape(carbon_intensity))
-print('arriva', arrival_time, 'dept', departure_time, 'initial', initial_state, 'required',required_energy, 'final',final_energy)
+#print('arriva', arrival_time, 'dept', departure_time, 'initial', initial_state, 'required',required_energy, 'final',final_energy)
 
 def carbon_aware_MPC(carbon_intensity, num_of_vehicles, timesteps, initial_states, max_power, terminal_states,
                      arrival_time, dept_time, power_capacity, B, factor):

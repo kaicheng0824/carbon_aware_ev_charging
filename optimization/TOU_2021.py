@@ -151,12 +151,12 @@ def TOU_aware_MPC(TOU_price, num_of_vehicles, timesteps,
 starting_index = 0
 end_index = 0
 
-path = '../result/gurobisolver/TOU_P120.csv'
+path = f'../result/gurobisolver/TOU_P{opts.P}.csv'
 if not os.path.exists(path):
     df = pd.DataFrame(columns=['day','factor','required','delivery','percents','num_vehicle','carbon_emission(kg)'])
     df.to_csv(path)
 error = []
-for current_date in range(1,5):
+for current_date in range(1,365):
     starting_index = np.copy(end_index)
     num_of_vehicles = 0
 
@@ -169,14 +169,10 @@ for current_date in range(1,5):
     dept_time = departure_time[starting_index:end_index]
 
     print("number of cars", num_of_vehicles)
-    try:
-        x, u = TOU_aware_MPCg(TOU_price, num_of_vehicles, num_steps,
-                                ini_state, max_power_u, final_state,
-                                arr_time, dept_time, power_capacity,
-                                battery_capacity, factor=balancing_fac, day=current_date)
-    except Exception as e:
-        error.append(current_date)
-        continue
+    x, u = TOU_aware_MPCg(TOU_price, num_of_vehicles, num_steps,
+                            ini_state, max_power_u, final_state,
+                            arr_time, dept_time, power_capacity,
+                            battery_capacity, factor=balancing_fac, day=current_date)
     carbon_emission = np.sum(np.array([u[:, t] * carbon_intensity[current_date, t] for t in range(num_steps)]))
     print(f'current day {current_date}, the energy delivery: {round(np.sum(u), 2)}, '
           f'the required energy: {round(np.sum(required_energy[starting_index:end_index]), 2)}, '
@@ -185,8 +181,7 @@ for current_date in range(1,5):
     current_date += 1
     required = round(np.sum(required_energy[starting_index:end_index]),2)
     delivery = round(np.sum(u),2)
-    # with open(path,'a+') as f:
-    #     csv_write = csv.writer(f)
-    #     data = ['0',current_date,balancing_fac,required,delivery,round(delivery/required*100,2), end_index-starting_index, carbon_emission*0.907]
-    #     csv_write.writerow(data)
-    # print(error)
+    with open(path,'a+') as f:
+        csv_write = csv.writer(f)
+        data = ['0',current_date,balancing_fac,required,delivery,round(delivery/required*100,2), end_index-starting_index, carbon_emission*0.907]
+        csv_write.writerow(data)

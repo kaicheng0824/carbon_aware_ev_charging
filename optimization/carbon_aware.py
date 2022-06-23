@@ -4,6 +4,8 @@ import cvxpy as cp  # convex optimization
 import matplotlib.pyplot as plt
 import argparse
 import time
+
+from sympy import factor
 import data_handler_yearly
 from carbon_forecasts import carbon_intensity_forecast
 import gurobipy
@@ -13,7 +15,7 @@ import os
 import pandas as pd
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--factor", type=float, default=0.4, help="the balanced factor")
+parser.add_argument("--factor", type=float, default=2, help="the balanced factor")
 parser.add_argument("--P", type=float, default=120, help="maxP")
 
 opts = parser.parse_args()
@@ -299,6 +301,7 @@ for current_date in range(1,365): #Need to construct initial forecasting data (1
 
     carbon_emission = np.sum(np.array([u[:, t] * carbon_intensity[current_date, t] for t in range(num_steps)]))
     print("OFFLINE ALGORITHM")
+    print("balance factor:{}".format(balancing_fac))
     print(f'the energy delivery: {round(np.sum(u), 2)}, '
         f'the required energy: {round(np.sum(required_energy[starting_index:end_index]), 2)}, '
         f'the carbon emission term: {round(carbon_emission, 2)}')

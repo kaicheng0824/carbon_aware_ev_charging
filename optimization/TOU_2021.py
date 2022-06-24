@@ -12,7 +12,7 @@ import pandas as pd
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--factor", type=float, default=2, help="the balanced factor")
+parser.add_argument("--factor", type=float, default=1, help="the balanced factor")
 parser.add_argument("--P", type=float, default=120, help="maxP")
 
 opts = parser.parse_args()

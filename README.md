@@ -10,7 +10,7 @@ We use dataset from the California Independent System Operator as well as the EV
 - Supply Data: https://www.caiso.com/todaysoutlook/Pages/supply.html
     - Zip File in this Repo: [CAISO_supply_2021.zip](data/Supply/CAISO_supply_2021.zip)
 - EV Charging Dataset (Provided by Berkley Lab)
-    - [LBNL_Data.csv](data/Berkley_EV_Charging/LBNL_Data.csv)
+    - csv file in this repo: [LBNL_Data.csv](data/Berkley_EV_Charging/LBNL_Data.csv)
 
 ### Consolidate python script
 These 2 scripts uses the csv library to iterate through all dates to summarize the year round data in terms of average carbon intensity.

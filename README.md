@@ -4,7 +4,7 @@ Carbon-aware EV charging is a collaborative project between the Lawrence Berkele
 We use dataset from the California Independent System Operator as well as the EV charging session data from the Berkley lab to simulate the optimization problem.
 
 ## Files
-### Dataset (CAISO Emission data)
+### Dataset
 - Emission Data: http://www.caiso.com/todaysoutlook/pages/emissions.html
     - Zip File in this Repo: [CAISO_CO2_per_resource_2021.zip](data/CO2/CAISO_CO2_per_resource_2021.zip)
 - Supply Data: https://www.caiso.com/todaysoutlook/Pages/supply.html

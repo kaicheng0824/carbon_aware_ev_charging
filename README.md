@@ -1,5 +1,7 @@
 # Carbon Aware EV Charging
-Downloading 2021 data from CAISO regarding carbon emission and power supply data to compute the carbon intensity of grid for EV charging optimization. 
+Carbon-aware EV charging is a collaborative project between the Lawrence Berkeley National Laboratory and the Department of Electrical and Computer Engineering with the goal of discovering an EV charging strategy that minimizes carbon emission during EV charging sessions. 
+
+We use dataset from the California Independent System Operator as well as the EV charging session data from the Berkley lab to simulate the optimization problem.
 
 ## Files
 ### Dataset (CAISO Emission data)
